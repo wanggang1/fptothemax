@@ -1,31 +1,34 @@
-package org.gwgs.fpmax.effects
+package org.gwgs.fpmax.typeclasses
+
+import org.gwgs.fpmax.effects.IO
 
 import scala.util.Try
 
 object Main {
 
-  import scala.io.StdIn._
-
   def parseInt(s: String): Option[Int] = Try(s.toInt).toOption
 
-  def putStrLn(line: String): IO[Unit] = IO(() => println(line))
+  def finish[F[_]: Program, A](a: => A): F[A] = Program[F].finish(a)
 
-  def getStrLn: IO[String] = IO(() => readLine())
+  def putStrLn[F[_]: Console](line: String): F[Unit] = Console[F].putStrLn(line)
 
-  def nextInt(upper: Int): IO[Int] = IO(() => scala.util.Random.nextInt(upper))
+  def getStrLn[F[_]: Console]: F[String] = Console[F].getStrLn
 
-  def checkContinue(name: String): IO[Boolean] =
+  def nextInt[F[_]: Random](upper: Int): F[Int] = Random[F].nextInt(upper)
+
+
+  def checkContinue[F[_]: Program: Console](name: String): F[Boolean] =
     for {
       _      <- putStrLn(s"Do you want to continue, $name?")
       input  <- getStrLn
       answer <- input.toLowerCase match {
-                  case "y" => IO.point(true)
-                  case "n" => IO.point(false)
+                  case "y" => finish(true)
+                  case "n" => finish(false)
                   case _   => checkContinue(name)
                 }
     } yield answer
 
-  def gameLoop(name: String): IO[Unit] =
+  def gameLoop[F[_]: Program: Console: Random](name: String): F[Unit] =
     for {
       num   <- nextInt(5).map(_ + 1)
       _     <- putStrLn(s"Dear $name, please guess a number from 1 to 5:")
@@ -37,11 +40,10 @@ object Main {
                 else putStrLn(s"You guessed wrong, $name! The number was: $num")
               }
       cont  <- checkContinue(name)
-      _     <- if (cont) gameLoop(name) else IO.point(())
+      _     <- if (cont) gameLoop(name) else finish(())
     } yield ()
 
-
-  def mainIO: IO[Unit] =
+  def main[F[_]: Program: Console: Random]: F[Unit] =
     for {
       _    <- putStrLn("What is your name?")
       name <- getStrLn
@@ -50,6 +52,7 @@ object Main {
     } yield ()
 
 
-  def main(args: Array[String]): Unit = mainIO.unsafeRun()
+  def mainIO: IO[Unit] = main[IO]
 
+  def main(args: Array[String]): Unit = mainIO.unsafeRun()
 }
