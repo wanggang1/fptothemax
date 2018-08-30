@@ -1,6 +1,7 @@
 package org.gwgs.fpmax.typeclasses
 
 import org.gwgs.fpmax.effects.IO
+import org.gwgs.fpmax.test.{TestData, TestIO}
 
 import scala.util.Try
 
@@ -57,6 +58,29 @@ object Main {
 
   def mainIO: IO[Unit] = main[IO]
 
+  def mainTestIO: TestIO[Unit] = main[TestIO]
+
   def main(args: Array[String]): Unit = mainIO.unsafeRun()
+
+/////////////////////////////////////////////////////////////////////
+  val TestExample =
+    TestData(
+      input  = "John" :: "1" :: "n" :: Nil,
+      output = Nil,
+      nums   = 0 :: Nil
+    )
+
+  /**
+    *sbt console
+    * >import import org.gwgs.fpmax.typeclasses.Main
+    * >Main.runTest
+    res0: String =
+    What is your name?
+    Hello, John, welcome to the game!
+    Dear John, please guess a number from 1 to 5:
+    You guessed right, John!
+    Do you want to continue, John?
+    */
+  def runTest = mainTestIO.eval(TestExample).showResults
 
 }
