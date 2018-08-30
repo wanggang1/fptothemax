@@ -1,0 +1,13 @@
+build/
+target/
+.idea/
+.idea_modules
+.DS_Store
+.classpath
+.project
+.settings/
+.sbtserver
+.cache-*
+tags
+outputfiles/
+
