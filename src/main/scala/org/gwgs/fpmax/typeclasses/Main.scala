@@ -28,17 +28,20 @@ object Main {
                 }
     } yield answer
 
+  def printResults[F[_]: Console](input: String, num: Int, name: String): F[Unit] =
+    parseInt(input).fold(
+      putStrLn("You did not enter a number")
+    )(guess =>
+      if (guess == num) putStrLn("You guessed right, " + name + "!")
+      else putStrLn("You guessed wrong, " + name + "! The number was: " + num)
+    )
+
   def gameLoop[F[_]: Program: Console: Random](name: String): F[Unit] =
     for {
       num   <- nextInt(5).map(_ + 1)
       _     <- putStrLn(s"Dear $name, please guess a number from 1 to 5:")
       input <- getStrLn
-      _     <- parseInt(input).fold {
-                putStrLn("You didn't enter a number")
-              } { guess =>
-                if (guess == num) putStrLn(s"You guessed right, $name!")
-                else putStrLn(s"You guessed wrong, $name! The number was: $num")
-              }
+      _     <- printResults(input, num, name)
       cont  <- checkContinue(name)
       _     <- if (cont) gameLoop(name) else finish(())
     } yield ()
@@ -55,4 +58,5 @@ object Main {
   def mainIO: IO[Unit] = main[IO]
 
   def main(args: Array[String]): Unit = mainIO.unsafeRun()
+
 }
