@@ -1,6 +1,6 @@
 package org.gwgs.fpmax.test
 
-import org.gwgs.fpmax.typeclasses.{Console, Program, Random}
+import org.gwgs.fpmax.typeclasses.{Console, ConsoleOut, Program, Random}
 
 /**
   * State Monad, with state type as TestData
@@ -27,7 +27,7 @@ object TestIO {
   }
 
   implicit val ConsoleTestIO = new Console[TestIO] {
-    def putStrLn(line: String): TestIO[Unit] = TestIO(t => t.putStrLn(line))
+    def putStrLn(line: ConsoleOut): TestIO[Unit] = TestIO(t => t.putStrLn(line))
     def getStrLn: TestIO[String] = TestIO(t => t.getStrLn)
   }
 

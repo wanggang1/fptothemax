@@ -1,7 +1,9 @@
 package org.gwgs.fpmax.test
 
-case class TestData(input: List[String], output: List[String], nums: List[Int]) {
-  def putStrLn(line: String): (TestData, Unit) =
+import org.gwgs.fpmax.typeclasses.ConsoleOut
+
+case class TestData(input: List[String], output: List[ConsoleOut], nums: List[Int]) {
+  def putStrLn(line: ConsoleOut): (TestData, Unit) =
     (copy(output = line :: output), ())
 
   def getStrLn: (TestData, String) =
@@ -10,5 +12,5 @@ case class TestData(input: List[String], output: List[String], nums: List[Int]) 
   def nextInt(upper: Int): (TestData, Int) =
     (copy(nums = nums.drop(1)), nums.head)
 
-  def showResults = output.reverse.mkString("\n")
+  def showResults = output.reverse.map(_.en).mkString("\n")
 }

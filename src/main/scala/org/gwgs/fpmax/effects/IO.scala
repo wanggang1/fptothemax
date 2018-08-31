@@ -1,6 +1,6 @@
 package org.gwgs.fpmax.effects
 
-import org.gwgs.fpmax.typeclasses.{Console, Program, Random}
+import org.gwgs.fpmax.typeclasses.{Console, ConsoleOut, Program, Random}
 
 /**
   *
@@ -26,7 +26,7 @@ object IO {
   implicit val ConsoleIO = new Console[IO] {
     import scala.io.StdIn._
 
-    def putStrLn(line: String): IO[Unit] = IO(() => println(line))
+    def putStrLn(line: ConsoleOut): IO[Unit] = IO(() => println(line.en))
 
     def getStrLn: IO[String] = IO(() => readLine())
   }
