@@ -4,7 +4,7 @@ import org.gwgs.fpmax.typeclasses.{Console, ConsoleOut, Program, Random}
 
 /**
   *
-  * TODO: use scalaz or zio
+  * TODO: use scalaz zio or cats.effect.IO
   */
 case class IO[A](unsafeRun: () => A) { self =>
   def map[B](f: A => B): IO[B] = IO(() => f(self.unsafeRun()))
