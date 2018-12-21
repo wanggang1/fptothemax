@@ -1,11 +1,6 @@
 package org.gwgs.fpmax.effects
 
-import org.gwgs.fpmax.typeclasses.{Console, ConsoleOut, Program, Random}
 
-/**
-  *
-  * TODO: use scalaz zio or cats.effect.IO
-  */
 case class IO[A](unsafeRun: () => A) { self =>
   def map[B](f: A => B): IO[B] = IO(() => f(self.unsafeRun()))
 
@@ -14,6 +9,11 @@ case class IO[A](unsafeRun: () => A) { self =>
 
 object IO {
   def point[A](a: => A): IO[A] = IO(() => a)
+
+
+  /*
+  //use cats.effect.IO
+  import org.gwgs.fpmax.typeclasses.{Console, ConsoleOut, Program, Random}
 
   implicit val ProgramIO = new Program[IO] {
     def finish[A](a: => A): IO[A] = IO.point(a)
@@ -34,4 +34,5 @@ object IO {
   implicit val RandomIO = new Random[IO] {
     def nextInt(upper: Int): IO[Int] = IO(() => scala.util.Random.nextInt(upper))
   }
+  */
 }

@@ -1,8 +1,8 @@
 package org.gwgs.fpmax.typeclasses
 
-import org.gwgs.fpmax.effects.IO
 import org.gwgs.fpmax.test.{TestData, TestIO}
 
+import cats.effect.IO
 import scala.util.Try
 
 object Main {
@@ -58,19 +58,22 @@ object Main {
     } yield ()
 
 
+////////////////////////////// IO /////////////////////////////////
+
   def mainIO: IO[Unit] = main[IO]
 
-  def mainTestIO: TestIO[Unit] = main[TestIO]
+  def main(args: Array[String]): Unit = mainIO.unsafeRunSync
 
-  def main(args: Array[String]): Unit = mainIO.unsafeRun()
 
-/////////////////////////////////////////////////////////////////////
+//////////////////////////// TestIO ///////////////////////////////
   val TestExample =
     TestData(
       input  = "John" :: "1" :: "n" :: Nil,
       output = Nil,
       nums   = 0 :: Nil
     )
+
+  def mainTestIO: TestIO[Unit] = main[TestIO]
 
   /**
     *sbt console

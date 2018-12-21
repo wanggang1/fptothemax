@@ -1,5 +1,7 @@
 package org.gwgs.fpmax.typeclasses
 
+import cats.effect.IO
+
 /**
   * a Class that has ability to read from and write to Console
   */
@@ -10,6 +12,14 @@ trait Console[F[_]] {
 
 object Console {
   def apply[F[_]](implicit F: Console[F]): Console[F] = F
+
+  implicit val ConsoleIO = new Console[IO] {
+    import scala.io.StdIn._
+
+    def putStrLn(line: ConsoleOut): IO[Unit] = IO { println(line.en) }
+
+    def getStrLn: IO[String] = IO { readLine() }
+  }
 }
 
 
