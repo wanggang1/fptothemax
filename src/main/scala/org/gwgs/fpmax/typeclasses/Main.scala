@@ -1,13 +1,14 @@
 package org.gwgs.fpmax.typeclasses
 
+import org.gwgs.fpmax.effects.IO
 import org.gwgs.fpmax.test.{TestData, TestIO}
 
-import cats.effect.IO
 import scala.util.Try
 
 object Main {
   import ConsoleOut._
 
+  //Helpers
   def parseInt(s: String): Option[Int] = Try(s.toInt).toOption
 
   def finish[F[_]: Program, A](a: => A): F[A] = Program[F].finish(a)
@@ -62,7 +63,7 @@ object Main {
 
   def mainIO: IO[Unit] = main[IO]
 
-  def main(args: Array[String]): Unit = mainIO.unsafeRunSync
+  def main(args: Array[String]): Unit = mainIO.unsafeRun()
 
 
 //////////////////////////// TestIO ///////////////////////////////

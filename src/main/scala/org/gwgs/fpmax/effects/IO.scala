@@ -10,11 +10,9 @@ case class IO[A](unsafeRun: () => A) { self =>
 object IO {
   def point[A](a: => A): IO[A] = IO(() => a)
 
-
-  /*
-  //use cats.effect.IO
   import org.gwgs.fpmax.typeclasses.{Console, ConsoleOut, Program, Random}
 
+  // used in org.gwgs.fpmax.typeclasses.Main
   implicit val ProgramIO = new Program[IO] {
     def finish[A](a: => A): IO[A] = IO.point(a)
 
@@ -23,6 +21,7 @@ object IO {
     def map[A, B](fa: IO[A], ab: A => B): IO[B] = fa map ab
   }
 
+  // used in org.gwgs.fpmax.typeclasses.Main
   implicit val ConsoleIO = new Console[IO] {
     import scala.io.StdIn._
 
@@ -31,8 +30,9 @@ object IO {
     def getStrLn: IO[String] = IO(() => readLine())
   }
 
+  // used in org.gwgs.fpmax.typeclasses.Main
   implicit val RandomIO = new Random[IO] {
     def nextInt(upper: Int): IO[Int] = IO(() => scala.util.Random.nextInt(upper))
   }
-  */
+
 }
