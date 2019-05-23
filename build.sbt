@@ -7,8 +7,10 @@ version := "0.1.0"
 scalaVersion := "2.12.8"
 
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "cats-core" % "1.6.0",
+  "org.typelevel" %% "cats-core"    % "1.6.0",
   "org.typelevel" %% "cats-effect"  %  "1.3.0",
+  "org.scalaz"    %% "scalaz-zio"         % "1.0-RC4",
+  "org.scalaz"    %% "scalaz-zio-streams" % "1.0-RC4",
   "org.scalatest" %% "scalatest"     % "3.0.5"    % Test,
   "org.mockito"    % "mockito-core"  % "1.10.19"  % Test
 )
