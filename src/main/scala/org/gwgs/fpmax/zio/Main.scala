@@ -61,7 +61,7 @@ object Main {
       input <- getInput(PleaseGuess(name))
       _     <- printResults(input, num, name)
       cont  <- checkContinue(name)
-      _     <- if (cont) gameLoop(name) else finish(())
+      _     <- if (cont) gameLoop(name) else putToConsole(Bye(name))
     } yield ()
 
   val program: ZIO[AppServices, AppError, Unit] =

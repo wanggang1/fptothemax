@@ -47,7 +47,7 @@ object Main {
       input <- getStrLn
       _     <- printResults(input, num, name)
       cont  <- checkContinue(name)
-      _     <- if (cont) gameLoop(name) else finish(())
+      _     <- if (cont) gameLoop(name) else putStrLn(Bye(name))
     } yield ()
 
   def main[F[_]: Program: Console: Random]: F[Unit] =
@@ -78,7 +78,7 @@ object Main {
 
   /**
     *sbt console
-    * >import import org.gwgs.fpmax.typeclasses.Main
+    * >import org.gwgs.fpmax.typeclasses.Main
     * >Main.runTest
     res0: String =
     What is your name?
@@ -86,6 +86,7 @@ object Main {
     Dear John, please guess a number from 1 to 5:
     You guessed right, John!
     Do you want to continue (y/n), John?
+    Bye!
     */
   def runTest = mainTestIO.eval(TestExample).showResults
 

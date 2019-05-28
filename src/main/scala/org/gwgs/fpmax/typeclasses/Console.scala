@@ -56,4 +56,7 @@ object ConsoleOut {
   case object YouDidNotEnterNumber extends ConsoleOut {
     def en = "You did not enter a number!"
   }
+  case class Bye(name: String) extends ConsoleOut {
+    def en = s"Bye, $name!"
+  }
 }
