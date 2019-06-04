@@ -4,7 +4,7 @@ package object zio {
 
   import scalaz.zio.ZIO
 
-  type AppError = Exception
+  case class AppError(errMsg: String)
 
   type AppServices = Console with Random
 

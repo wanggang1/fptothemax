@@ -11,21 +11,17 @@ object Main {
   import ConsoleOut._
   import Random._
 
-  /**
-    * TODO: how handle error works so we can have ZIO[Any, AppError, A] through out the program???
-    */
-
   //Helpers
   def parseInt(s: String): Option[Int] = Try(s.toInt).toOption
 
   def finish[A](a: => A): ZIO[Any, AppError, A] =
-    ZIO.effect(a).refineOrDie { case e : AppError => e }
+    ZIO.effect(a).refineOrDie { case err => AppError(err.getMessage) }
 
   def putToConsole(text: ConsoleOut): ZIO[Console, AppError, Unit] =
-    putStrLn(text).refineOrDie { case e : AppError => e }
+    putStrLn(text).mapError(t => AppError(t.getMessage))
 
   def getFromConsole: ZIO[Console, AppError, String] =
-    getStrLn.refineOrDie { case e : AppError => e }
+    getStrLn.mapError(t => AppError(t.getMessage))
 
   def getInput(title: ConsoleOut): ZIO[Console, AppError, String] =
     for {
@@ -34,7 +30,7 @@ object Main {
     } yield input
 
   def randomNumber: ZIO[Random, AppError, Int] =
-    nextInt(5).map(_ + 1).refineOrDie { case e : AppError => e }
+    nextInt(5).map(_ + 1).mapError(t => AppError(t.getMessage))
 
 
   def printResults(input: String, num: Int, name: String): ZIO[Console, AppError, Unit] =
